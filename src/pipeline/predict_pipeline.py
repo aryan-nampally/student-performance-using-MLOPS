@@ -1,7 +1,22 @@
 import sys
+import os
 import pandas as pd
 from src.exception import CustomException
 from src.utils import load_object
+
+
+_model = None
+_preprocessor = None
+
+def _load_artifacts():
+    """Load model and preprocessor into module-level cache (lazy)."""
+    global _model, _preprocessor
+    if _model is None or _preprocessor is None:
+        model_path = os.path.join("artifacts","model.pkl")
+        preprocessor_path = os.path.join('artifacts','preprocessor.pkl')
+        print("Loading artifacts into cache...")
+        _model = load_object(file_path=model_path)
+        _preprocessor = load_object(file_path=preprocessor_path)
 
 
 class PredictPipeline:
@@ -10,16 +25,16 @@ class PredictPipeline:
 
     def predict(self,features):
         try:
-            model_path=os.path.join("artifacts","model.pkl")
-            preprocessor_path=os.path.join('artifacts','preprocessor.pkl')
-            print("Before Loading")
-            model=load_object(file_path=model_path)
-            preprocessor=load_object(file_path=preprocessor_path)
-            print("After Loading")
-            data_scaled=preprocessor.transform(features)
-            preds=model.predict(data_scaled)
+            # Ensure artifacts are loaded once and cached for subsequent requests
+            _load_artifacts()
+            print("Using cached artifacts")
+            model = _model
+            preprocessor = _preprocessor
+
+            data_scaled = preprocessor.transform(features)
+            preds = model.predict(data_scaled)
             return preds
-        
+
         except Exception as e:
             raise CustomException(e,sys)
 
