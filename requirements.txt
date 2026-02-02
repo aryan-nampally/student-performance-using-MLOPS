@@ -1,11 +1,11 @@
-pandas
-numpy
-seaborn
-matplotlib
-scikit-learn
-catboost
-xgboost
-Flask
+--prefer-binary
+flask
 gunicorn
+numpy
+pandas
+scikit-learn
+xgboost==1.7.6
+catboost
+joblib
 
-#-e .
+# Keep this file minimal and CPU-oriented for faster deployments
