@@ -3,11 +3,11 @@
 **Target Python runtime:** `Python 3.13` ✅
 
 
-## Deployment (Azure App Service)
+## Deployment
 
 - Add `gunicorn` to `requirements.txt` so the WSGI server is installed during deployment.
 
-- Recommended startup command (Linux App Service):
+- Recommended startup command (Linux):
 
     `gunicorn app:app --workers 1 --bind 0.0.0.0:8000 --timeout 180`
 
