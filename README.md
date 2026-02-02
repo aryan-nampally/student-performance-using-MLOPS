@@ -1,5 +1,8 @@
 ## End to End MAchine Learning Project
 
+**Target Python runtime:** `Python 3.13` ✅
+
+
 ## Deployment (Azure App Service)
 
 - Add `gunicorn` to `requirements.txt` so the WSGI server is installed during deployment.

@@ -22,6 +22,6 @@ version='0.0.1',
 author='Krish',
 author_email='krishnaik06@gmail.com',
 packages=find_packages(),
-install_requires=get_requirements('requirements.txt')
-
+install_requires=get_requirements('requirements.txt'),
+    python_requires='>=3.13,<4'
 )
