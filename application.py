@@ -1,4 +1,4 @@
-from flask import Flask,request,render_template
+from flask import Flask,request,render_template,jsonify
 import numpy as np
 import pandas as pd
 
@@ -38,6 +38,11 @@ def predict_datapoint():
         print("Mid Prediction")
         results=predict_pipeline.predict(pred_df)
         print("after Prediction")
+        
+        # Support for AJAX requests
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({'result': results[0]})
+            
         return render_template('home.html',results=results[0])
     
 

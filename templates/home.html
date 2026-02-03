@@ -1,113 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Student Exam Performance</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  </head>
-  <body>
-    <div class="container">
-      <div class="hero">
-        <div class="hero-left">
-          <h1 class="h-title">Student Exam Performance Indicator</h1>
-          <p class="h-sub">Predict students' math score with a lightweight, production-ready API. Fast startup, lazy model loading, and focused UI.</p>
-          <div class="card">
+</head>
+<body>
+    <div class="background-glob"></div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <span>EduPredict</span>
+            </div>
+            <h1>Performance Indicator</h1>
+            <p>Advanced ML model to estimate student exam scores based on demographic and preparation data.</p>
+        </header>
+
+        <main class="card glass-panel">
             <form id="predict-form" action="{{ url_for('predict_datapoint') }}" method="post">
-              <div class="form-row">
-                <div>
-                  <label>Gender</label>
-                  <select name="gender" required>
-                    <option disabled selected value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Race / Ethnicity</label>
-                  <select name="ethnicity" required>
-                    <option disabled selected value="">Select ethnicity</option>
-                    <option value="group A">Group A</option>
-                    <option value="group B">Group B</option>
-                    <option value="group C">Group C</option>
-                    <option value="group D">Group D</option>
-                    <option value="group E">Group E</option>
-                  </select>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="select-wrapper">
+                            <select name="gender" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Race / Ethnicity</label>
+                        <div class="select-wrapper">
+                            <select name="ethnicity" required>
+                                <option value="" disabled selected>Select Group</option>
+                                <option value="group A">Group A</option>
+                                <option value="group B">Group B</option>
+                                <option value="group C">Group C</option>
+                                <option value="group D">Group D</option>
+                                <option value="group E">Group E</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parental Education</label>
+                        <div class="select-wrapper">
+                            <select name="parental_level_of_education" required>
+                                <option value="" disabled selected>Select Level</option>
+                                <option value="associate's degree">Associate's Degree</option>
+                                <option value="bachelor's degree">Bachelor's Degree</option>
+                                <option value="high school">High School</option>
+                                <option value="master's degree">Master's Degree</option>
+                                <option value="some college">Some College</option>
+                                <option value="some high school">Some High School</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lunch Type</label>
+                        <div class="select-wrapper">
+                            <select name="lunch" required>
+                                <option value="" disabled selected>Select Lunch</option>
+                                <option value="free/reduced">Free / Reduced</option>
+                                <option value="standard">Standard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Test Prep Course</label>
+                        <div class="select-wrapper">
+                            <select name="test_preparation_course" required>
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="none">None</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group input-group">
+                        <div>
+                            <label>Writing Score</label>
+                            <input type="number" name="writing_score" min="0" max="100" placeholder="0-100" required />
+                        </div>
+                        <div>
+                            <label>Reading Score</label>
+                            <input type="number" name="reading_score" min="0" max="100" placeholder="0-100" required />
+                        </div>
+                    </div>
                 </div>
 
-                <div class="full">
-                  <label>Parental Level of Education</label>
-                  <select name="parental_level_of_education" required>
-                    <option disabled selected value="">Select</option>
-                    <option value="associate's degree">associate's degree</option>
-                    <option value="bachelor's degree">bachelor's degree</option>
-                    <option value="high school">high school</option>
-                    <option value="master's degree">master's degree</option>
-                    <option value="some college">some college</option>
-                    <option value="some high school">some high school</option>
-                  </select>
+                <div class="form-footer">
+                    <button id="submit-btn" type="submit" class="cta-button">
+                        <span class="btn-text">Calculate Prediction</span>
+                        <div class="loader"></div>
+                    </button>
                 </div>
-
-                <div>
-                  <label>Lunch</label>
-                  <select name="lunch" required>
-                    <option disabled selected value="">Select</option>
-                    <option value="free/reduced">free/reduced</option>
-                    <option value="standard">standard</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label>Test Preparation</label>
-                  <select name="test_preparation_course" required>
-                    <option disabled selected value="">Select</option>
-                    <option value="none">None</option>
-                    <option value="completed">Completed</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label>Writing Score</label>
-                  <input type="number" name="writing_score" min="0" max="100" />
-                </div>
-
-                <div>
-                  <label>Reading Score</label>
-                  <input type="number" name="reading_score" min="0" max="100" />
-                </div>
-
-                <div class="full" style="margin-top:8px">
-                  <button id="submit-btn" class="btn-primary" type="submit"><span>Predict your Maths score</span></button>
-                </div>
-              </div>
             </form>
-
-            <div id="prediction-result" class="result">{% if results %}The prediction is <strong>{{ results }}</strong>{% else %}No prediction yet{% endif %}</div>
-          </div>
-
-          <div class="footer small">Tip: Predictions are made using a cached model to avoid slow startup. Use realistic scores for best results.</div>
-        </div>
-
-        <div class="hero-right">
-          <!-- Lightweight illustrative SVG (keeps repo small) -->
-          <svg width="100%" height="100%" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#5eead4"/></linearGradient>
-            </defs>
-            <rect rx="18" width="600" height="400" fill="url(#g)" opacity="0.12"/>
-            <g transform="translate(40,40)">
-              <circle cx="120" cy="80" r="44" fill="#0f2233" opacity="0.85"/>
-              <rect x="200" y="40" width="240" height="180" rx="8" fill="#06212b" opacity="0.9"/>
-              <text x="210" y="80" fill="#cbeff3" font-size="18">ML Prediction</text>
-              <rect x="210" y="100" width="200" height="28" rx="6" fill="#0f172a"/>
-            </g>
-          </svg>
-        </div>
-      </div>
+            
+            <div id="result-container" class="result-area {% if results %}visible{% endif %}">
+                <div class="result-content">
+                    <span class="result-label">Predicted Math Score</span>
+                    <span class="result-value" id="prediction-value">{{ results if results else '' }}</span>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2024 ML Algo. Optimized for performance.</p>
+        </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </body>
+</body>
 </html>
